@@ -1,0 +1,19 @@
+set init
+
+set httpd
+	port 2812
+	allow myuser:mypassword
+
+check process zabbix-server with pidfile /var/run/zabbix/zabbix_server.pid
+	start program = "/sbin/service zabbix-server start" 
+	stop program = "/sbin/service zabbix-server stop"
+
+check process zabbix-agent with pidfile /var/run/zabbix/zabbix_agentd.pid
+	start program = "/sbin/service zabbix-agent start" 
+	stop program = "/sbin/service zabbix-agent stop"
+
+check process httpd with pidfile /var/run/httpd/httpd.pid
+	start program = "/sbin/service httpd start" 
+	stop program = "/sbin/service httpd stop"
+	depends on zabbix-server
+
